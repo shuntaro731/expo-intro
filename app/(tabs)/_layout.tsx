@@ -1,8 +1,18 @@
-import { Tabs } from "expo-router";
+import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs"; //Liquidを実装するにはnative-tabsからimport
 
 export default function TabLayout() {
-  <Tabs>
-    <Tabs.Screen name="index" options={{ title: "Home" }} />
-    <Tabs.Screen name="about" options={{ title: "About" }} />
-  </Tabs>;
+  return (
+    <NativeTabs tintColor="#ffd33d">
+
+      <NativeTabs.Trigger name="index">
+        <Label>Home</Label>
+        <Icon sf="house.fill" />
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="about">
+        <Label>About</Label>
+        <Icon sf="info.circle" />
+      </NativeTabs.Trigger>
+    </NativeTabs>
+  );
 }
