@@ -1,4 +1,4 @@
-import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs"; //Liquidを実装するにはnative-tabsからimport
+import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs"; //LiquidGlassを実装するにはnative-tabsからimport
 
 export default function TabLayout() {
   return (

@@ -1,20 +1,20 @@
-import { Text, View, StyleSheet } from "react-native";
-import { Link } from 'expo-router'
+import { StyleSheet, View } from "react-native";
+
+import Button from "@/components/Button";
+import ImageViewer from "../../components/imageViewer";
+
+const PlaceholderImage = require("@/assets/images/background-image.png");
 
 export default function Index() {
   return (
-    <View
-      style={{
-        backgroundColor: "#25292e",
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text style={styles.text}>ホーム画面</Text>
-      <Link href="/about" style={styles.button}>
-        Go to About Screen
-      </Link>
+    <View style={styles.container}>
+      <View style={styles.ImageConteiner}>
+        <ImageViewer imgSorce={PlaceholderImage} />
+      </View>
+      <View style={styles.footerContainer}>
+        <Button theme="primary" label="ライブラリから選択"/>
+        <Button label="この写真を使う"/>
+      </View>
     </View>
   );
 }
@@ -22,18 +22,17 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#25292e',
+    backgroundColor: "#25292e",
+    alignItems: "center",
+  },
+
+  ImageConteiner: {
+    paddingTop: 46,
+    flex: 1,
+  },
+  footerContainer: {
+    flex: 2/3,
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  text: {
-    color: '#fff',
-  },
-
-  button: {
-    fontSize: 20,
-    textDecorationLine: 'underline',
-    color: '#fff',
   }
-})
+});
+
