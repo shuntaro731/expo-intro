@@ -1,20 +1,99 @@
-import { StyleSheet, View } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { useState } from "react";
+import { ImageSourcePropType, StyleSheet, View } from "react-native";
 
+import IconButton from "@/components/ IconButton";
 import Button from "@/components/Button";
+import CircleButton from "@/components/CircleButton";
+import EmojiList from "@/components/EmojiList";
+import EmojiPicker from "@/components/EmojiPicker";
 import ImageViewer from "../../components/imageViewer";
+import EmojiSticker from "@/components/EmojiSticker";
 
 const PlaceholderImage = require("@/assets/images/background-image.png");
 
 export default function Index() {
+  const [selectedImage, setSelectedImage] = useState<string | undefined>(
+    undefined
+  );
+  const [showAppOptions, setShowAppOptions] = useState<boolean>(false);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [pickedEmoji, setPickedEmoji] = useState<
+    ImageSourcePropType | undefined
+  >(undefined);
+
+  const pickImageAsync = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setSelectedImage(result.assets[0].uri);
+      setShowAppOptions(true);
+    } else {
+      alert("画像を選択してください");
+    }
+  };
+
+  const onReset = () => {
+    setShowAppOptions(false);
+  };
+
+  const onAddSticker = () => {
+    setIsModalVisible(true);
+  };
+
+  const onModalClose = async () => {
+    setIsModalVisible(false);
+  };
+
+  const onSaveImageAsync = async () => {
+    //coming soon
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.ImageConteiner}>
-        <ImageViewer imgSorce={PlaceholderImage} />
+        <ImageViewer
+          imgSorce={PlaceholderImage}
+          selectedImage={selectedImage}
+        />
+        {pickedEmoji && <EmojiSticker imageSize={40} stickerSource={pickedEmoji}/>}
       </View>
-      <View style={styles.footerContainer}>
-        <Button theme="primary" label="ライブラリから選択"/>
-        <Button label="この写真を使う"/>
-      </View>
+      {showAppOptions ? (
+        <View style={styles.optionsContainer}>
+          <View style={styles.optionsRow}>
+            <IconButton
+              icon="refresh"
+              label="Reset"
+              onPress={onSaveImageAsync}
+            />
+            <CircleButton onPress={onAddSticker} />
+            <IconButton
+              icon="save-alt"
+              label="Save"
+              onPress={onSaveImageAsync}
+            />
+          </View>
+        </View>
+      ) : (
+        <View style={styles.footerContainer}>
+          <Button
+            theme="primary"
+            label="ライブラリから選択"
+            onPress={pickImageAsync}
+          />
+          <Button
+            label="この写真を使う"
+            onPress={() => setShowAppOptions(true)}
+          />
+        </View>
+      )}
+      <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
+        <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
+      </EmojiPicker>
     </View>
   );
 }
@@ -27,12 +106,19 @@ const styles = StyleSheet.create({
   },
 
   ImageConteiner: {
-    paddingTop: 46,
+    paddingTop: 70,
     flex: 1,
   },
   footerContainer: {
-    flex: 2/3,
-    alignItems: 'center',
-  }
+    bottom: 100,
+    alignItems: "center",
+  },
+  optionsContainer: {
+    position: "absolute",
+    bottom: 130,
+  },
+  optionsRow: {
+    alignItems: "center",
+    flexDirection: "row",
+  },
 });
-
