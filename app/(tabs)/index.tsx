@@ -2,7 +2,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
 import { ImageSourcePropType, StyleSheet, View } from "react-native";
 
-import IconButton from "@/components/ IconButton";
+import IconButton from "@/components/IconButton";
 import Button from "@/components/Button";
 import CircleButton from "@/components/CircleButton";
 import EmojiList from "@/components/EmojiList";
