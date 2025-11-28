@@ -1,7 +1,5 @@
 import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs"; //LiquidGlassを実装するにはnative-tabsからimport
-import { useEffect } from 'react';
 import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
 import {
   NotoSansJP_400Regular,
   NotoSansJP_500Medium,
