@@ -17,21 +17,6 @@ export default function TabLayout() {
     'NotoSansJP-Semibold': NotoSansJP_600SemiBold,
   });
 
-  // ロード完了またはエラー発生時の処理
-  useEffect(() => {
-    if (fontError) throw fontError;
-    if (fontsLoaded) {
-      // フォントロードが完了したらスプラッシュスクリーンを隠す
-      // （このファイルがアプリの最上位のエントリーポイントであれば）
-      SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded, fontError]);
-
-  // フォントがロードされていない、またはエラーが発生した場合、タブを表示しない
-  if (!fontsLoaded && !fontError) {
-    return null; // 👈 ロード完了まで待機
-  }
-
   return (
     <NativeTabs tintColor="#ffd33d">
 
