@@ -32,8 +32,8 @@ const styles = StyleSheet.create({
 
   buttonLabel: {
     color: "#fff",
-    fontSize: 16,
-    fontFamily: 'NotoSansJP-Regular',
+    fontSize: 14,
+    fontFamily: "NotoSansJP-Regular",
   },
 });
 

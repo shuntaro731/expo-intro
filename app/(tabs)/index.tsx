@@ -1,7 +1,9 @@
 import * as ImagePicker from "expo-image-picker";
-import { useState } from "react";
+import * as MediaLibrary from "expo-media-library";
+import { useEffect, useRef, useState } from "react";
 import { ImageSourcePropType, StyleSheet, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { captureRef } from 'react-native-view-shot';
 
 import Button from "@/components/Button";
 import CircleButton from "@/components/CircleButton";
@@ -17,6 +19,17 @@ export default function Index() {
   const [selectedImage, setSelectedImage] = useState<string | undefined>(
     undefined
   );
+
+  const imageRef = useRef<View>(null);
+
+  const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
+
+  useEffect(() => {
+    if (!permissionResponse?.granted) {
+      requestPermission();
+    }
+  }, []);
+
   const [showAppOptions, setShowAppOptions] = useState<boolean>(false);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [pickedEmoji, setPickedEmoji] = useState<
@@ -51,20 +64,34 @@ export default function Index() {
   };
 
   const onSaveImageAsync = async () => {
-    //coming soon
+    try {
+      const localUri = await captureRef(imageRef, {
+        height: 440,
+        quality: 1,
+      });
+
+      await MediaLibrary.saveToLibraryAsync(localUri);
+      if (localUri) {
+        alert('画像を保存しました!')
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
-    <GestureHandlerRootView style={styles.rootContainer}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.ImageConteiner}>
-          <ImageViewer
-            imgSorce={PlaceholderImage}
-            selectedImage={selectedImage}
-          />
-          {pickedEmoji && (
-            <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
-          )}
+          <View ref={imageRef} collapsable={false}>
+            <ImageViewer
+              imgSorce={PlaceholderImage}
+              selectedImage={selectedImage}
+            />
+            {pickedEmoji && (
+              <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
+            )}
+          </View>
         </View>
         {showAppOptions ? (
           <View style={styles.optionsContainer}>
@@ -103,13 +130,7 @@ export default function Index() {
   );
 }
 
-
-
 const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-  },
-
   container: {
     flex: 1,
     backgroundColor: "#25292e",
