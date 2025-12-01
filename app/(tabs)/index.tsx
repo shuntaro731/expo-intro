@@ -1,10 +1,10 @@
-import * as ImagePicker from "expo-image-picker";
-import * as MediaLibrary from "expo-media-library";
+import * as ImagePicker from "expo-image-picker"; //スマホのフォトライブラリを開いて写真を選択する機能
+import * as MediaLibrary from "expo-media-library"; //画像を保存する機能。作成した画像をスマホのアルバムに書き込んだり、保存の許可をもらう
 import { useEffect, useRef, useState } from "react";
-import { ImageSourcePropType, Platform, StyleSheet, View } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { captureRef } from 'react-native-view-shot';
-import domtoimage from 'dom-to-image';
+import { ImageSourcePropType, Platform, StyleSheet, View } from "react-native"; //Platform: 今動いているプラットフォーム(ios or web)を特定する。
+import { GestureHandlerRootView } from "react-native-gesture-handler"; //タッチ操作を担う機能
+import { captureRef } from 'react-native-view-shot'; //アプリ内の特定の場所を画像にするライブラリ
+import domtoimage from 'dom-to-image'; // アプリ内の特定の場所を画像にするライブラリ(web用)
 
 import Button from "@/components/Button";
 import CircleButton from "@/components/CircleButton";
@@ -14,11 +14,13 @@ import EmojiSticker from "@/components/EmojiSticker";
 import IconButton from "@/components/IconButton";
 import ImageViewer from "../../components/imageViewer";
 
-const PlaceholderImage = require("@/assets/images/background-image.png");
+const PlaceholderImage = require("@/assets/images/background-image.png"); // requireを使うと、アプリをビルド（作成）するときに、この画像ファイルがアプリの中に埋め込まれます。@/...: プロジェクトのルート（一番上の階層）を意味する
 
 export default function Index() {
-  const [selectedImage, setSelectedImage] = useState<string | undefined>(
-    undefined
+
+  //selectedImageは現在選択中の画像でsetSelectedImageは画像を更新する関数
+  const [selectedImage, setSelectedImage] = useState<string | undefined>( //string | undefined は この state の型。string(画像のパス) か undefined のどちらかになる
+    undefined //imgの初期値
   );
 
   const imageRef = useRef<View>(null);
@@ -71,7 +73,7 @@ export default function Index() {
           height: 440,
           quality: 1,
         });
-  
+
         await MediaLibrary.saveToLibraryAsync(localUri);
         if (localUri) {
           alert('画像を保存しました!')
@@ -103,7 +105,7 @@ export default function Index() {
         <View style={styles.ImageConteiner}>
           <View ref={imageRef} collapsable={false}>
             <ImageViewer
-              imgSorce={PlaceholderImage}
+              imgSorce={PlaceholderImage} //デフォルトの画像
               selectedImage={selectedImage}
             />
             {pickedEmoji && (
@@ -117,7 +119,7 @@ export default function Index() {
               <IconButton
                 icon="refresh"
                 label="Reset"
-                onPress={onSaveImageAsync}
+                onPress={onReset}
               />
               <CircleButton onPress={onAddSticker} />
               <IconButton
